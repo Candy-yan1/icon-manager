@@ -25,7 +25,14 @@ export default function IconManager() {
   const [selectedIcon, setSelectedIcon] = useState<Icon | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      const category = url.searchParams.get('category');
+      return category || 'all';
+    }
+    return 'all';
+  });
   
   // Auth state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -91,12 +98,29 @@ export default function IconManager() {
     } finally {
       setLoading(false);
     }
-  }, [page, search, refreshTrigger]);
+  }, [page, search, refreshTrigger, activeCategory]);
 
   const handleCategoryClick = (category: string, keyword: string) => {
     setActiveCategory(category);
     setSearch(keyword);
     setPage(1);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (category === 'all' && keyword === '') {
+        url.searchParams.delete('category');
+        if (!url.searchParams.get('search')) {
+          url.searchParams.delete('search');
+        }
+      } else {
+        url.searchParams.set('category', category);
+        if (keyword) {
+          url.searchParams.set('search', keyword);
+        } else {
+          url.searchParams.delete('search');
+        }
+      }
+      window.history.pushState({}, '', url.toString());
+    }
   };
 
   useEffect(() => {
