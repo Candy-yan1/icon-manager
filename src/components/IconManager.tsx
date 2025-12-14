@@ -197,7 +197,8 @@ export default function IconManager() {
         limit: '40',
         search,
         category: activeCategory === 'custom' ? '' : activeCategory,
-        refresh: refreshTrigger > 0 ? 'true' : 'false'
+        // refresh is disabled in static mode
+        refresh: 'false'
       });
       const res = await fetch(`/api/icons?${params}`);
       const data = await res.json();
