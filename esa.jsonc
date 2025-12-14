@@ -1,5 +1,6 @@
 {
   "name": "icon-manager",
+  "entry": "./src/edge.js",
   "buildCommand": "npm run build",
   "assets": {
     "directory": "./dist",

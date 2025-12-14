@@ -4,6 +4,7 @@ import path from 'node:path';
 const iconDir = path.join(process.cwd(), 'public', 'icon');
 const outputDir = path.join(process.cwd(), 'src', 'generated');
 const outputFile = path.join(outputDir, 'icons.json');
+const outputEdgeFile = path.join(process.cwd(), 'src', 'generated', 'icons-edge.js');
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
@@ -26,5 +27,11 @@ try {
   console.error('Error reading icon directory:', error);
 }
 
+// Write JSON for Frontend
 fs.writeFileSync(outputFile, JSON.stringify(icons, null, 2));
 console.log(`Icon list written to ${outputFile}`);
+
+// Write JS for Edge Routine
+const edgeContent = `export const icons = ${JSON.stringify(icons)};`;
+fs.writeFileSync(outputEdgeFile, edgeContent);
+console.log(`Edge icon list written to ${outputEdgeFile}`);
