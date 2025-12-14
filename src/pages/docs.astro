@@ -5,7 +5,7 @@ import { BookOpen, Code, Terminal, Copy, ExternalLink, Server, Globe, Shield } f
 const baseUrl = Astro.url.origin;
 ---
 
-<Layout title="API 接口文档 - 图标大世界">
+<Layout title="API 接口文档 - FlatNas图库">
   <div class="min-h-screen bg-gray-50 p-6 md:p-12">
     <div class="max-w-5xl mx-auto">
       <header className="mb-12 border-b border-gray-200 pb-8">
@@ -139,7 +139,6 @@ const baseUrl = Astro.url.origin;
           </div>
         </section>
 
-        {/* 2. 图片访问 */}
         <section class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
            <div class="bg-green-50 p-6 border-b border-green-100 flex items-center justify-between">
             <h2 class="text-xl font-bold text-green-900 flex items-center gap-2">
@@ -160,12 +159,145 @@ const baseUrl = Astro.url.origin;
           </div>
         </section>
 
-        {/* 3. 管理接口 */}
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div class="bg-yellow-50 p-6 border-b border-yellow-100 flex items-center justify-between">
+            <h2 class="text-xl font-bold text-yellow-900 flex items-center gap-2">
+              <Shield className="w-5 h-5" />
+              3. 认证与用户管理
+            </h2>
+            <span class="text-yellow-800 text-sm font-mono bg-yellow-200 px-3 py-1 rounded-full">/api/auth/* /api/users</span>
+          </div>
+          <div class="p-8 space-y-6">
+            <div>
+              <div class="flex items-center gap-3 mb-1">
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">POST</span>
+                <code class="text-sm font-mono text-gray-800">/api/auth/register</code>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">注册新用户，默认角色为普通用户，需管理员授权后才能上传。</p>
+              <pre class="bg-gray-900 text-gray-200 rounded-lg p-3 text-xs overflow-x-auto font-mono"><code>{`Body (JSON):
+{
+  "username": "your_name",
+  "password": "your_password"
+}
+
+Response 200:
+{
+  "success": true,
+  "pendingApproval": true
+}`}</code></pre>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-3 mb-1">
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">POST</span>
+                <code class="text-sm font-mono text-gray-800">/api/auth/login</code>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">用户名 + 密码登录，成功后会在 Cookie 中写入会话信息。</p>
+              <pre class="bg-gray-900 text-gray-200 rounded-lg p-3 text-xs overflow-x-auto font-mono"><code>{`Body (JSON):
+{
+  "username": "your_name",
+  "password": "your_password"
+}
+
+Response 200:
+{
+  "success": true,
+  "user": {
+    "username": "your_name",
+    "role": "admin | user",
+    "approved": true
+  }
+}`}</code></pre>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-3 mb-1">
+                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-bold">POST</span>
+                <code class="text-sm font-mono text-gray-800">/api/auth/change-password</code>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">登录后修改当前用户密码。</p>
+              <pre class="bg-gray-900 text-gray-200 rounded-lg p-3 text-xs overflow-x-auto font-mono"><code>{`Body (JSON):
+{
+  "oldPassword": "old",
+  "newPassword": "new"
+}
+
+Response 200:
+{ "success": true }`}</code></pre>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs font-bold">GET</span>
+                  <code class="text-sm font-mono text-gray-800">/api/auth/check</code>
+                </div>
+                <p class="text-sm text-gray-600 mb-1">检查当前登录状态，返回用户角色和是否已授权上传。</p>
+                <pre class="bg-gray-900 text-gray-200 rounded-lg p-3 text-xs overflow-x-auto font-mono"><code>{`Response 200:
+{
+  "loggedIn": true,
+  "user": {
+    "username": "xx",
+    "role": "admin | user",
+    "approved": true
+  }
+}`}</code></pre>
+              </div>
+
+              <div>
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs font-bold">POST</span>
+                  <code class="text-sm font-mono text-gray-800">/api/auth/logout</code>
+                </div>
+                <p class="text-sm text-gray-600 mb-1">退出登录，清理会话 Cookie。</p>
+                <pre class="bg-gray-900 text-gray-200 rounded-lg p-3 text-xs overflow-x-auto font-mono"><code>{`Response 200:
+{ "success": true }`}</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-3 mb-1">
+                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-bold">GET / POST</span>
+                <code class="text-sm font-mono text-gray-800">/api/users</code>
+                <span class="text-xs text-red-500">仅管理员</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">管理员查看用户列表、授权上传权限、调整角色。</p>
+              <pre class="bg-gray-900 text-gray-200 rounded-lg p-3 text-xs overflow-x-auto font-mono"><code>{`GET /api/users
+Response 200:
+{
+  "users": [
+    {
+      "username": "alice",
+      "role": "admin",
+      "approved": true,
+      "createdAt": 1715000000000
+    }
+  ]
+}
+
+POST /api/users
+Body (JSON):
+{
+  "username": "bob",
+  "approved": true,          // 可选，授权/关闭上传
+  "role": "admin" | "user"   // 可选，调整角色
+}
+
+Response 200:
+{ "success": true }`}</code></pre>
+            </div>
+
+            <p class="text-xs text-gray-500">
+              提示：当前端上传接口返回 403 时，通常是用户未登录或未被管理员授权上传。
+            </p>
+          </div>
+        </section>
+
         <section class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden opacity-75 hover:opacity-100 transition-opacity">
            <div class="bg-gray-50 p-6 border-b border-gray-200 flex items-center justify-between">
             <h2 class="text-xl font-bold text-gray-700 flex items-center gap-2">
               <Shield className="w-5 h-5" />
-              3. 管理接口 (需鉴权)
+              4. 管理接口 (需鉴权)
             </h2>
             <span class="text-gray-500 text-sm">仅管理员</span>
           </div>
@@ -194,12 +326,11 @@ const baseUrl = Astro.url.origin;
           </div>
         </section>
 
-        {/* 4. 快速接入示例 */}
         <section class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           <div class="bg-purple-50 p-6 border-b border-purple-100 flex items-center justify-between">
             <h2 class="text-xl font-bold text-purple-900 flex items-center gap-2">
               <Code className="w-5 h-5" />
-              4. 快速接入示例 (JavaScript/React)
+              5. 快速接入示例 (JavaScript/React)
             </h2>
           </div>
           <div class="p-8">
