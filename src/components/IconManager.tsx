@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, ChevronLeft, ChevronRight, Loader2, Monitor, Smartphone, IdCard, LayoutGrid, Copy, Download, Info } from 'lucide-react';
+import { Search, X, ChevronLeft, ChevronRight, Monitor, Smartphone, IdCard, LayoutGrid, Copy, Download, Info } from 'lucide-react';
 import fileList from '../generated/file-list.json';
 import dbData from '../../db.json';
 
