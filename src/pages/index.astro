@@ -196,7 +196,7 @@ const parsedIcons = icons.map((filename) => {
               value={`/icon/${encodeURIComponent(icon.original)}`}
             />
             <div class="actions">
-              <button class="btn" data-action="copy">复制路径</button>
+              <button class="btn" data-action="copy">复制地址</button>
               <a
                 class="btn btn-primary"
                 href={`/icon/${encodeURIComponent(icon.original)}`}
@@ -219,6 +219,14 @@ const parsedIcons = icons.map((filename) => {
       const grid = document.getElementById('grid');
 
       if (searchInput && grid) {
+        // Initialize paths with full URL
+        const pathInputs = document.querySelectorAll('.path');
+        pathInputs.forEach((input) => {
+          if (input instanceof HTMLInputElement) {
+            input.value = window.location.origin + input.value;
+          }
+        });
+
         const cards = Array.from(grid.children) as HTMLElement[];
 
         function match(card: HTMLElement, q: string) {
@@ -255,7 +263,7 @@ const parsedIcons = icons.map((filename) => {
               const input = card.querySelector('.path') as HTMLInputElement | null;
               if (input) {
                 navigator.clipboard.writeText(input.value);
-                alert('已复制路径：' + input.value);
+                alert('已复制地址：' + input.value);
               }
             }
           }
