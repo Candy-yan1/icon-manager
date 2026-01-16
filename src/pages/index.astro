@@ -10,7 +10,7 @@ if (fs.existsSync(iconDir)) {
     .readdirSync(iconDir)
     .filter((file) => {
       const ext = path.extname(file).toLowerCase();
-      return ['.png', '.jpg', '.jpeg', '.svg', '.webp', '.gif'].includes(ext);
+      return ['.png', '.jpg', '.jpeg', '.svg', '.webp', '.gif', '.ico'].includes(ext);
     })
     .sort();
 }
@@ -270,11 +270,11 @@ const parsedIcons = icons.map((filename) => {
         <a href="https://hub.docker.com/r/qdnas/flatnas" target="_blank">Docker Hub</a>
       </div>
 
-      <div class="donate-float">
-        <div class="donate-title">求投喂</div>
-        <img src="/alipay.jpg" alt="Alipay" class="qr-code" title="支付宝打赏" />
-        <img src="/wechat.jpg" alt="WeChat" class="qr-code" title="微信打赏" />
-      </div>
+      <!--<div class="donate-float">-->
+      <!--  <div class="donate-title">求投喂</div>-->
+      <!--  <img src="/alipay.jpg" alt="Alipay" class="qr-code" title="支付宝打赏" />-->
+      <!--  <img src="/wechat.jpg" alt="WeChat" class="qr-code" title="微信打赏" />-->
+      <!--</div>-->
 
       <div id="grid" class="grid">
         {parsedIcons.map((icon) => (
